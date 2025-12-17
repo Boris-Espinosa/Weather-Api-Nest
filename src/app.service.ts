@@ -1,15 +1,17 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import 'dotenv/config';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
+  constructor(private configService: ConfigService) {}
+
   async fetchWeather(
     cityName: string,
     date1: string | undefined,
     date2: string | undefined,
   ) {
-    const API_KEY = process.env.API_KEY;
-    const API_URL = process.env.API_URL;
+    const API_KEY = this.configService.get<string>('API_KEY');
+    const API_URL = this.configService.get<string>('API_URL');
 
     const reqUrl = date1
       ? date2
